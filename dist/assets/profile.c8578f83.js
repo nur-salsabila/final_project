@@ -1,0 +1,1 @@
+import{S as s,i as t,s as a,g as e,k as r,p as n,n as o,l}from"./vendor.e0b9c4aa.js";function c(s){let t;return{c(){t=e("test")},l(s){t=r(s,"test")},m(s,a){n(s,t,a)},p:o,i:o,o:o,d(s){s&&l(t)}}}export default class extends s{constructor(s){super(),t(this,s,null,c,a,{})}}
