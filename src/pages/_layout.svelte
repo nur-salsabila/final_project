@@ -1,6 +1,6 @@
 <script>
     import Icon from "svelte-awesome";
-    import { faBars } from "@fortawesome/free-solid-svg-icons";
+    import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
     import { fly } from "svelte/transition";
     let sidebar = false;
   </script>
