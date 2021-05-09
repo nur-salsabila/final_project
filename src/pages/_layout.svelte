@@ -17,22 +17,26 @@
         <div class="my-3 text-blue-500 text-xl font-extrabold text-center">
           Datain.
         </div>
-        <a  href="/" class="w-full">
-            <div class="text-white text-sm font-semibold py-2 pl-4 cursor-pointer hover:bg-gray-800">
-                Dashboard
-            </div>
+        <a  href="/" class="w-full" on:click={() => sidebar = false}>
+          <div class="text-white text-sm font-semibold py-2 pl-4 hover:bg-gray-800">
+              Dashboard
+          </div>
         </a>
-        <div class="text-white text-sm font-semibold py-2 pl-4 cursor-pointer hover:bg-gray-800">
-          Data
-        </div>
-        <a  href="/profile" class="w-full">
-            <div class="text-white text-sm font-semibold py-2 pl-4 cursor-pointer hover:bg-gray-800">
+        <a href="/data" class="w-full" on:click={() => sidebar = false}>
+          <div class="text-white text-sm font-semibold py-2 pl-4 hover:bg-gray-800">
+            Data
+          </div>
+        </a>
+        <a  href="/profile" class="w-full" on:click={() => sidebar = false}>
+            <div class="text-white text-sm font-semibold py-2 pl-4 hover:bg-gray-800">
                 Profile
             </div>
         </a>
-        <div class="text-white text-sm font-semibold py-2 pl-4 cursor-pointer hover:bg-gray-800">
-          Contact
-        </div>
+        <a href="/contact" class="w-full" on:click={() => sidebar = false}>
+          <div class="text-white text-sm font-semibold py-2 pl-4 hover:bg-gray-800">
+            Contact
+          </div>
+        </a>
       </div>
     {/if}
   

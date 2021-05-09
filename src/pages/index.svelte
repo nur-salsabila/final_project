@@ -154,7 +154,7 @@
 
 <div class="w-full flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
   <Box title="Tampilan Data" width="w-full sm:w-2/3">
-    <div class="overflow-y-scroll h-full">
+    <div class="overflow-y-scroll h-64">
       <table class="table-auto w-full">
         {#each data as data}
           <tr class="border-b">

@@ -20,5 +20,9 @@
     "vite": "^2.2.3",
     "vite-plugin-windicss": "^0.15.10",
     "windicss": "^2.5.14"
+  },
+  "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "svelte-simple-modal": "^0.10.1"
   }
 }
