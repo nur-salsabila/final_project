@@ -1,5 +1,5 @@
 <script>
-  import Box from "../../../school_project/src/../../school_project/src/components/Box.svelte";
+  import Box from "../components/Box.svelte";
   import Icon from "svelte-awesome";
   import {
     faWhatsapp,
