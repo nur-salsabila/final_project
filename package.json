@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "parse": "^3.2.0",
     "svelte-simple-modal": "^0.10.1"
   }
 }

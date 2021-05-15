@@ -7,93 +7,23 @@
     faKeyboard,
     faUserGraduate
   } from "@fortawesome/free-solid-svg-icons";
+  import { datas, query } from "../server";
   import Box from "../components/Box.svelte";
 
-  const data = [
-    {
-      name: "Alhan Saha Sadida",
-      status: "Siswa",
-      position: "XI RPL 1"
-    },
-    {
-      name: "Raihan Ramadhan Rahman",
-      status: "Siswa",
-      position: "XI RPL 1"
-    },
-    {
-      name: "Mahmud Joko Susanto",
-      status: "Siswa",
-      position: "X TKJ 2"
-    },
-    {
-      name: "Jhon Welldone",
-      status: "Siswa",
-      position: "X TPM 3"
-    },
-    {
-      name: "Donald Gowell",
-      status: "Staff",
-      position: "OB"
-    },
-    {
-      name: "Dudung Dzulkifli",
-      status: "Guru",
-      position: "PWPB"
-    },
-    {
-      name: "Thomas Roweld",
-      status: "Siswa",
-      position: "XII TPM 1"
-    },
-    {
-      name: "Bruno Mculding",
-      status: "Siswa",
-      position: "XIII TOI 1"
-    },
-    {
-      name: "Asep Tri Widiyantoro",
-      status: "Guru",
-      position: "PBO"
-    },
-    {
-      name: "Bayu Perdana",
-      status: "Siswa",
-      position: "XII TKJ 2"
-    },
-    {
-      name: "Jack Jhonson",
-      status: "Staff",
-      position: "OB"
-    },
-    {
-      name: "Sam Gilbert",
-      status: "Siswa",
-      position: "XII TPTU 1"
-    },
-    {
-      name: "Titi Nurlaela",
-      status: "Guru",
-      position: "MTK"
-    },
-    {
-      name: "Budi Budiman",
-      status: "Staff",
-      position: "TU"
-    },
-    {
-      name: "Surya Cahyo",
-      status: "Guru",
-      position: "DDG"
-    }
-  ];
-
-  let teacher = data.filter(data => data.status == "Guru");
-  let staff = data.filter(data => data.status == "Staff");
-  let student = data.filter(data => data.status == "Siswa");
+  let teacher, staff, student;
+  
+  const data = datas.then((res) => res)
+  
+  teacher = data.then((res) => res.filter((e) => e.get("status") == "Guru"))
+  staff = data.then((res) => res.filter((e) => e.get("status") == "Staff"))
+  student = data.then((res) => res.filter((e) => e.get("status") == "Murid"))
 
   Chart.defaults.global.legend.display = false;
 
-  onMount(() => {
+  onMount(async() => {
+    var chartData = await Promise.all([teacher, staff, student]).then((res) => {
+      return res.map((e) => e.length)
+    })
     var ctx = document.getElementById("myChart").getContext("2d");
     var chart = new Chart(ctx, {
       type: "doughnut",
@@ -107,7 +37,7 @@
               "rgb(59, 130, 246)",
               "rgb(239, 68, 68)"
             ],
-            data: [teacher.length, staff.length, student.length]
+            data: chartData
           }
         ]
       }
@@ -128,7 +58,11 @@
       <Icon data={faChalkboardTeacher} class="fill-current mx-auto" scale="1.5"/>
     </div>
     <div class="flex flex-row sm:flex-col items-center sm:items-start space-x-3 sm:space-x-0">
-      <span class="text-xl">{teacher.length}</span>
+      {#await teacher}
+        <span class="text-xl">Tunggu...</span>
+      {:then teacher} 
+        <span class="text-xl">{teacher.length}</span>        
+      {/await}
       <span class="text-gray-600">Guru</span>
     </div>
   </div>
@@ -137,7 +71,11 @@
       <Icon data={faKeyboard} class="fill-current mx-auto" scale="1.5"/>
     </div>
     <div class="flex flex-row sm:flex-col items-center sm:items-start space-x-3 sm:space-x-0">
-      <span class="text-xl">{staff.length}</span>
+      {#await staff}
+        <span class="text-xl">Tunggu...</span>
+      {:then staff} 
+        <span class="text-xl">{staff.length}</span>        
+      {/await}
       <span class="text-gray-600">Staff</span>
     </div>
   </div>
@@ -146,7 +84,11 @@
       <Icon data={faUserGraduate} class="fill-current mx-auto" scale="1.5"/>
     </div>
     <div class="flex flex-row sm:flex-col items-center sm:items-start space-x-3 sm:space-x-0">
-      <span class="text-xl">{student.length}</span>
+      {#await student}
+        <span class="text-xl">Tunggu...</span>
+      {:then student} 
+        <span class="text-xl">{student.length}</span>        
+      {/await}
       <span class="text-gray-600">Murid</span>
     </div>
   </div>
@@ -154,17 +96,21 @@
 
 <div class="w-full flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
   <Box title="Tampilan Data" width="w-full sm:w-2/3">
-    <div class="overflow-y-scroll h-64">
-      <table class="table-auto w-full">
-        {#each data as data}
-          <tr class="border-b">
-            <td>{data.name}</td>
-            <td>{data.status}</td>
-            <td>{data.position}</td>
-          </tr>
-        {/each}
-      </table>
-    </div>
+    {#await datas}
+      <span>Tunggu Sebentar...</span>
+    {:then data}
+      <div class="overflow-y-scroll h-64">
+        <table class="table-auto w-full">
+          {#each data as data}
+            <tr class="border-b">
+              <td>{data.get('name')}</td>
+              <td>{data.get('status')}</td>
+              <td>{data.get('position')}</td>
+            </tr>
+          {/each}
+        </table>
+      </div>
+    {/await}
   </Box>
 
   <Box title="Grafik" width="w-full sm:w-1/3">
@@ -175,41 +121,53 @@
 
 <div class="w-full flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
   <Box title="Guru" width="w-full sm:w-1/3">
-    <div class="overflow-y-scroll h-40">
-      <table class="table-auto w-full">
-        {#each teacher as data}
-          <tr class="border-b">
-            <td>{data.name}</td>
-            <td>{data.position}</td>
-          </tr>
-        {/each}
-      </table>
-    </div>
+    {#await teacher}
+      <span>Tunggu Sebentar...</span>
+    {:then teacher} 
+      <div class="overflow-y-scroll h-40">
+        <table class="table-auto w-full">
+          {#each teacher as data}
+            <tr class="border-b">
+              <td>{data.get("name")}</td>
+              <td>{data.get("position")}</td>
+            </tr>
+          {/each}
+        </table>
+      </div>
+    {/await}
   </Box>
 
   <Box title="Staff" width="w-full sm:w-1/3">
-    <div class="overflow-y-scroll h-40">
-      <table class="table-auto w-full">
-        {#each staff as data}
-          <tr class="border-b">
-            <td>{data.name}</td>
-            <td>{data.position}</td>
-          </tr>
-        {/each}
-      </table>
-    </div>
+    {#await staff}
+      <span>Tunggu Sebentar...</span>
+    {:then staff} 
+      <div class="overflow-y-scroll h-40">
+        <table class="table-auto w-full">
+          {#each staff as data}
+            <tr class="border-b">
+              <td>{data.get("name")}</td>
+              <td>{data.get("position")}</td>
+            </tr>
+          {/each}
+        </table>
+      </div>
+    {/await}
   </Box>
 
   <Box title="Siswa" width="w-full sm:w-1/3">
-    <div class="overflow-y-scroll h-40">
-      <table class="table-auto w-full">
-        {#each student as data}
-          <tr class="border-b">
-            <td>{data.name}</td>
-            <td>{data.position}</td>
-          </tr>
-        {/each}
-      </table>
-    </div>
+    {#await student}
+      <span>Tunggu Sebentar...</span>
+    {:then student} 
+      <div class="overflow-y-scroll h-40">
+        <table class="table-auto w-full">
+          {#each student as data}
+            <tr class="border-b">
+              <td>{data.get("name")}</td>
+              <td>{data.get("position")}</td>
+            </tr>
+          {/each}
+        </table>
+      </div>
+    {/await}
   </Box>
 </div>
